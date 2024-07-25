@@ -60,5 +60,7 @@ class DDDelayAudioProcessor : public juce::AudioProcessor {
 
     juce::AudioProcessorValueTreeState apvts{*this, nullptr, "Parameters", Parameters::createParameterLayout()};
 
+    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+
     Parameters params;
 };
