@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 
 #include "PluginProcessor.h"
+#include "Parameters.h"
 
 //==============================================================================
 /**
@@ -25,6 +26,15 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
     void resized() override;
 
    private:
+    juce::Slider slider;
+    juce::Label label;
+
+    juce::AudioProcessorValueTreeState::SliderAttachment attachment{
+        audioProcessor.apvts,
+        gainParamID.getParamID(),
+        slider,
+    };
+
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     DDDelayAudioProcessor& audioProcessor;
