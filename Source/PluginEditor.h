@@ -10,8 +10,8 @@
 
 #include <JuceHeader.h>
 
-#include "PluginProcessor.h"
 #include "Parameters.h"
+#include "PluginProcessor.h"
 
 //==============================================================================
 /**
@@ -26,6 +26,8 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
     void resized() override;
 
    private:
+    DDDelayAudioProcessor& audioProcessor;
+
     juce::Slider slider;
     juce::Label label;
 
@@ -37,7 +39,6 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
-    DDDelayAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessorEditor)
 };
