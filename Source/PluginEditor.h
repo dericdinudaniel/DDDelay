@@ -12,6 +12,7 @@
 
 #include "Parameters.h"
 #include "PluginProcessor.h"
+#include "RotaryKnob.h"
 
 //==============================================================================
 /**
@@ -28,14 +29,11 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
    private:
     DDDelayAudioProcessor& audioProcessor;
 
-    juce::Slider slider;
-    juce::Label label;
+    RotaryKnob gainKnob{"Gain", audioProcessor.apvts, gainParamID};
+    RotaryKnob mixKnob{"Mix", audioProcessor.apvts, mixParamID};
+    RotaryKnob delayTimeKnob{"Time", audioProcessor.apvts, delayTimeParamID};
 
-    juce::AudioProcessorValueTreeState::SliderAttachment attachment{
-        audioProcessor.apvts,
-        gainParamID.getParamID(),
-        slider,
-    };
+    juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
 
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
