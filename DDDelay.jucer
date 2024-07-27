@@ -6,7 +6,12 @@
               pluginManufacturerCode="DDD4" pluginCode="Dlay" pluginVST3Category="Delay,Fx"
               cppLanguageStandard="20">
   <MAINGROUP id="XIeTMj" name="DDDelay">
+    <GROUP id="{1ECD74FC-C1F3-129A-5A49-F1ECB42ED3E4}" name="Assets">
+      <FILE id="tUTeRQ" name="Lato-Medium.ttf" compile="0" resource="1" file="Resources/Lato-Medium.ttf"/>
+    </GROUP>
     <GROUP id="{1C969D2A-E24B-CA76-6AD1-5917B7656834}" name="Source">
+      <FILE id="yfPPkm" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
+      <FILE id="mFw6Yb" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
       <FILE id="gNiCZJ" name="Parameters.cpp" compile="1" resource="0" file="Source/Parameters.cpp"/>
       <FILE id="Bgfe3M" name="Parameters.h" compile="0" resource="0" file="Source/Parameters.h"/>
       <FILE id="CawM8c" name="PluginEditor.cpp" compile="1" resource="0"

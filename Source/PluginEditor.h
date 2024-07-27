@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 
+#include "LookAndFeel.h"
 #include "Parameters.h"
 #include "PluginProcessor.h"
 #include "RotaryKnob.h"
@@ -29,7 +30,7 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
    private:
     DDDelayAudioProcessor& audioProcessor;
 
-    RotaryKnob gainKnob{"Gain", audioProcessor.apvts, gainParamID};
+    RotaryKnob gainKnob{"Gain", audioProcessor.apvts, gainParamID, true};
     RotaryKnob mixKnob{"Mix", audioProcessor.apvts, mixParamID};
     RotaryKnob delayTimeKnob{"Time", audioProcessor.apvts, delayTimeParamID};
 

@@ -28,6 +28,8 @@ DDDelayAudioProcessorEditor::DDDelayAudioProcessorEditor(DDDelayAudioProcessor& 
     outputGroup.addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
+    gainKnob.slider.setColour(juce::Slider::ColourIds::rotarySliderFillColourId, juce::Colours::green);
+
     setSize(500, 330);
 }
 
@@ -36,7 +38,7 @@ DDDelayAudioProcessorEditor::~DDDelayAudioProcessorEditor() {
 
 //==============================================================================
 void DDDelayAudioProcessorEditor::paint(juce::Graphics& g) {
-    g.fillAll(juce::Colours::darkgrey);
+    g.fillAll(Colors::background);
 }
 
 void DDDelayAudioProcessorEditor::resized() {
