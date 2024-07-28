@@ -22,28 +22,27 @@ class Parameters {
 
     static juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
 
-    static constexpr float minDelayTime = 5.0f;
-    static constexpr float maxDelayTime = 5000.0f;
-
     void prepareToPlay(double sampleRate) noexcept;
-    void update() noexcept;
     void reset() noexcept;
+    void update() noexcept;
     void smoothen() noexcept;
 
     float gain = 0.0f;
     float delayTime = 0.0f;
-    float mix = 0.0f;
+    float mix = 1.0f;
+
+    static constexpr float minDelayTime = 5.0f;
+    static constexpr float maxDelayTime = 5000.0f;
 
    private:
     juce::AudioParameterFloat* gainParam;
     juce::LinearSmoothedValue<float> gainSmoother;
 
     juce::AudioParameterFloat* delayTimeParam;
+
     float targetDelayTime = 0.0f;
-    float coeff = 0.0f;  // one-pole smoothing coefficient
+    float coeff = 0.0f;  // one-pole smoothing
 
     juce::AudioParameterFloat* mixParam;
     juce::LinearSmoothedValue<float> mixSmoother;
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(Parameters)
 };

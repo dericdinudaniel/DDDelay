@@ -28,7 +28,11 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
     void resized() override;
 
    private:
+    // This reference is provided as a quick way for your editor to
+    // access the processor object that created it.
     DDDelayAudioProcessor& audioProcessor;
+
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessorEditor)
 
     RotaryKnob gainKnob{"Gain", audioProcessor.apvts, gainParamID, true};
     RotaryKnob mixKnob{"Mix", audioProcessor.apvts, mixParamID};
@@ -36,8 +40,5 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
 
     juce::GroupComponent delayGroup, feedbackGroup, outputGroup;
 
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessorEditor)
+    MainLookAndFeel mainLF;
 };

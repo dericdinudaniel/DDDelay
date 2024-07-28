@@ -75,9 +75,6 @@ void DDDelayAudioProcessor::changeProgramName(int index, const juce::String& new
 
 //==============================================================================
 void DDDelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock) {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-
     params.prepareToPlay(sampleRate);
     params.reset();
 
@@ -92,7 +89,7 @@ void DDDelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
     delayLine.setMaximumDelayInSamples(maxDelayInSamples);
     delayLine.reset();
 
-    DBG(maxDelayInSamples);
+    // DBG(maxDelayInSamples);
 }
 
 void DDDelayAudioProcessor::releaseResources() {
@@ -100,11 +97,11 @@ void DDDelayAudioProcessor::releaseResources() {
     // spare memory, etc.
 }
 
-#ifndef JucePlugin_PreferredChannelConfigurations
+// #ifndef JucePlugin_PreferredChannelConfigurations
 bool DDDelayAudioProcessor::isBusesLayoutSupported(const BusesLayout& layouts) const {
     return layouts.getMainOutputChannelSet() == juce::AudioChannelSet::stereo();
 }
-#endif
+// #endif
 
 void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[maybe_unused]] juce::MidiBuffer& midiMessages) {
     juce::ScopedNoDenormals noDenormals;
@@ -120,27 +117,21 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear(i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-
     params.update();
 
     float sampleRate = float(getSampleRate());
 
-    float* channelDataLl = buffer.getWritePointer(0);
-    float* channelDataRl = buffer.getWritePointer(1);
+    float* channelDataL = buffer.getWritePointer(0);
+    float* channelDataR = buffer.getWritePointer(1);
 
     for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
         params.smoothen();
+
         float delayInSamples = params.delayTime / 1000.0f * sampleRate;
         delayLine.setDelay(delayInSamples);
 
-        float dryL = channelDataLl[sample];
-        float dryR = channelDataRl[sample];
+        float dryL = channelDataL[sample];
+        float dryR = channelDataR[sample];
 
         delayLine.pushSample(0, dryL);
         delayLine.pushSample(1, dryR);
@@ -151,8 +142,8 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
 
-        channelDataLl[sample] = mixL * params.gain;
-        channelDataRl[sample] = mixR * params.gain;
+        channelDataL[sample] = mixL * params.gain;
+        channelDataR[sample] = mixR * params.gain;
     }
 }
 
@@ -167,17 +158,10 @@ juce::AudioProcessorEditor* DDDelayAudioProcessor::createEditor() {
 
 //==============================================================================
 void DDDelayAudioProcessor::getStateInformation(juce::MemoryBlock& destData) {
-    // You should use this method to store your parameters in the memory block.
-    // You could do that either as raw data, or use the XML or ValueTree classes
-    // as intermediaries to make it easy to save and load complex data.
-
-    copyXmlToBinary(*apvts.state.createXml(), destData);
+    copyXmlToBinary(*apvts.copyState().createXml(), destData);
 }
 
 void DDDelayAudioProcessor::setStateInformation(const void* data, int sizeInBytes) {
-    // You should use this method to restore your parameters from this memory block,
-    // whose contents will have been created by the getStateInformation() call.
-
     std::unique_ptr<juce::XmlElement> xml(getXmlFromBinary(data, sizeInBytes));
     if (xml.get() != nullptr and xml->hasTagName(apvts.state.getType())) {
         apvts.replaceState(juce::ValueTree::fromXml(*xml));

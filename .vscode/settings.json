@@ -1,0 +1,7 @@
+{
+  "files.associations": {
+    "__config": "cpp",
+    "__verbose_abort": "cpp",
+    "cstring": "cpp"
+  }
+}

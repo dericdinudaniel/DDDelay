@@ -24,19 +24,17 @@ static juce::String stringFromMilliseconds(float value, int) {
     } else if (value < 1000.0f) {
         return juce::String(int(value)) + " ms";
     } else {
-        return juce::String(value * .001f, 2) + " s";
+        return juce::String(value * 0.001f, 2) + " s";
     }
 }
 
 static float millisecondsFromString(const juce::String& text) {
     float value = text.getFloatValue();
-
     if (!text.endsWithIgnoreCase("ms")) {
         if (text.endsWithIgnoreCase("s") or value < Parameters::minDelayTime) {
-            value *= 1000.0f;
+            return value * 1000.0f;
         }
     }
-
     return value;
 }
 
@@ -56,6 +54,7 @@ Parameters::Parameters(juce::AudioProcessorValueTreeState& apvts) {
 
 juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterLayout() {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
+
     layout.add(std::make_unique<juce::AudioParameterFloat>(
         gainParamID,
         "Output Gain",
@@ -68,25 +67,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout Parameters::createParameterL
         "Delay Time",
         juce::NormalisableRange<float>{minDelayTime, maxDelayTime, 0.001f, 0.25f},
         100.0f,
-        juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromMilliseconds).withValueFromStringFunction(millisecondsFromString)));
+        juce::AudioParameterFloatAttributes()
+            .withStringFromValueFunction(stringFromMilliseconds)
+            .withValueFromStringFunction(millisecondsFromString)));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>(
         mixParamID,
         "Mix",
-        juce::NormalisableRange<float>{0.0f, 100.0f, 1.0f},
+        juce::NormalisableRange<float>(0.0f, 100.0f, 1.0f),
         100.0f,
         juce::AudioParameterFloatAttributes().withStringFromValueFunction(stringFromPercent)));
+
     return layout;
-}
-
-void Parameters::update() noexcept {
-    gainSmoother.setTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
-    targetDelayTime = delayTimeParam->get();
-    if (delayTime == 0.0f) {
-        delayTime = targetDelayTime;
-    }
-
-    mixSmoother.setTargetValue(mixParam->get() * 0.01f);
 }
 
 void Parameters::prepareToPlay(double sampleRate) noexcept {
@@ -104,13 +96,24 @@ void Parameters::reset() noexcept {
 
     delayTime = 0.0f;
 
-    mix = 0.0f;
+    mix = 1.0f;
     mixSmoother.setCurrentAndTargetValue(mixParam->get() * 0.01f);
 }
 
+void Parameters::update() noexcept {
+    gainSmoother.setTargetValue(juce::Decibels::decibelsToGain(gainParam->get()));
+
+    targetDelayTime = delayTimeParam->get();
+    if (delayTime == 0.0f) {
+        delayTime = targetDelayTime;
+    }
+
+    mixSmoother.setTargetValue(mixParam->get() * 0.01f);
+}
 void Parameters::smoothen() noexcept {
     gain = gainSmoother.getNextValue();
-    delayTime += coeff * (targetDelayTime - delayTime);
+
+    delayTime += (targetDelayTime - delayTime) * coeff;
 
     mix = mixSmoother.getNextValue();
 }

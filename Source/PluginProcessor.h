@@ -54,7 +54,8 @@ class DDDelayAudioProcessor : public juce::AudioProcessor {
     void getStateInformation(juce::MemoryBlock& destData) override;
     void setStateInformation(const void* data, int sizeInBytes) override;
 
-    juce::AudioProcessorValueTreeState apvts{*this, nullptr, "Parameters", Parameters::createParameterLayout()};
+    juce::AudioProcessorValueTreeState apvts{
+        *this, nullptr, "Parameters", Parameters::createParameterLayout()};
 
    private:
     //==============================================================================

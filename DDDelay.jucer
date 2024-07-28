@@ -7,7 +7,10 @@
               cppLanguageStandard="20">
   <MAINGROUP id="XIeTMj" name="DDDelay">
     <GROUP id="{1ECD74FC-C1F3-129A-5A49-F1ECB42ED3E4}" name="Assets">
-      <FILE id="tUTeRQ" name="Lato-Medium.ttf" compile="0" resource="1" file="Resources/Lato-Medium.ttf"/>
+      <FILE id="O0k4jS" name="JetBrainsMono-Regular.ttf" compile="0" resource="1"
+            file="Resources/JetBrainsMono-Regular.ttf"/>
+      <FILE id="Fgag5H" name="Logo.png" compile="0" resource="1" file="Resources/Logo.png"/>
+      <FILE id="j5VIy8" name="Noise.png" compile="0" resource="1" file="Resources/Noise.png"/>
     </GROUP>
     <GROUP id="{1C969D2A-E24B-CA76-6AD1-5917B7656834}" name="Source">
       <FILE id="yfPPkm" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
