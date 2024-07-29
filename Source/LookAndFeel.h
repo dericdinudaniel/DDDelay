@@ -84,6 +84,10 @@ class MainLookAndFeel : public juce::LookAndFeel_V4 {
 
     juce::Font getLabelFont(juce::Label&) override;
 
+    void drawGroupComponentOutline(juce::Graphics& g, int width, int height,
+                                   const juce::String& text, const juce::Justification& position,
+                                   juce::GroupComponent& group) override;
+
    private:
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(MainLookAndFeel)
 };
