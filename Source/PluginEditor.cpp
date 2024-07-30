@@ -29,6 +29,7 @@ DDDelayAudioProcessorEditor::DDDelayAudioProcessorEditor(DDDelayAudioProcessor& 
     addAndMakeVisible(outputGroup);
 
     feedbackGroup.addAndMakeVisible(feedbackKnob);
+    feedbackGroup.addAndMakeVisible(stereoKnob);
 
     setSize(500, 330);
 
@@ -83,4 +84,5 @@ void DDDelayAudioProcessorEditor::resized() {
     mixKnob.setTopLeftPosition(20, 20);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
     feedbackKnob.setTopLeftPosition(20, 20);
+    stereoKnob.setTopLeftPosition(feedbackKnob.getRight() + 20, 20);
 }
