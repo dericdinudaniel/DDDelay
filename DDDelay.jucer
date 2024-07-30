@@ -24,6 +24,8 @@
             file="Source/PluginProcessor.cpp"/>
       <FILE id="RGncep" name="PluginProcessor.h" compile="0" resource="0"
             file="Source/PluginProcessor.h"/>
+      <FILE id="dJHBgP" name="ProtectYourEars.h" compile="0" resource="0"
+            file="Source/ProtectYourEars.h"/>
       <FILE id="yguBFr" name="RotaryKnob.cpp" compile="1" resource="0" file="Source/RotaryKnob.cpp"/>
       <FILE id="WxIogQ" name="RotaryKnob.h" compile="0" resource="0" file="Source/RotaryKnob.h"/>
     </GROUP>

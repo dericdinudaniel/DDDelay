@@ -9,6 +9,7 @@
 #include "PluginProcessor.h"
 
 #include "PluginEditor.h"
+#include "ProtectYourEars.h"
 
 //==============================================================================
 DDDelayAudioProcessor::DDDelayAudioProcessor()
@@ -89,7 +90,8 @@ void DDDelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
     delayLine.setMaximumDelayInSamples(maxDelayInSamples);
     delayLine.reset();
 
-    // DBG(maxDelayInSamples);
+    feedbackL = 0.0f;
+    feedbackR = 0.0f;
 }
 
 void DDDelayAudioProcessor::releaseResources() {
@@ -133,11 +135,14 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         float dryL = channelDataL[sample];
         float dryR = channelDataR[sample];
 
-        delayLine.pushSample(0, dryL);
-        delayLine.pushSample(1, dryR);
+        delayLine.pushSample(0, dryL + feedbackL);
+        delayLine.pushSample(1, dryR + feedbackR);
 
         float wetL = delayLine.popSample(0);
         float wetR = delayLine.popSample(1);
+
+        feedbackL = wetL * params.feedback;
+        feedbackR = wetR * params.feedback;
 
         float mixL = dryL + wetL * params.mix;
         float mixR = dryR + wetR * params.mix;
@@ -145,6 +150,10 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         channelDataL[sample] = mixL * params.gain;
         channelDataR[sample] = mixR * params.gain;
     }
+
+#if JUCE_DEBUG
+    protectYourEars(buffer);
+#endif
 }
 
 //==============================================================================

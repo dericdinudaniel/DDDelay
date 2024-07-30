@@ -28,6 +28,8 @@ DDDelayAudioProcessorEditor::DDDelayAudioProcessorEditor(DDDelayAudioProcessor& 
     outputGroup.addAndMakeVisible(mixKnob);
     addAndMakeVisible(outputGroup);
 
+    feedbackGroup.addAndMakeVisible(feedbackKnob);
+
     setSize(500, 330);
 
     gainKnob.slider.setColour(juce::Slider::rotarySliderFillColourId, juce::Colours::green);
@@ -80,4 +82,5 @@ void DDDelayAudioProcessorEditor::resized() {
     delayTimeKnob.setTopLeftPosition(20, 20);
     mixKnob.setTopLeftPosition(20, 20);
     gainKnob.setTopLeftPosition(mixKnob.getX(), mixKnob.getBottom() + 10);
+    feedbackKnob.setTopLeftPosition(20, 20);
 }
