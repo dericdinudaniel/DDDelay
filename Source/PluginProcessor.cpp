@@ -17,6 +17,8 @@ DDDelayAudioProcessor::DDDelayAudioProcessor()
                          .withInput("Input", juce::AudioChannelSet::stereo(), true)
                          .withOutput("Output", juce::AudioChannelSet::stereo(), true)),
       params(apvts) {
+    lowCutFilter.setType(juce::dsp::StateVariableTPTFilterType::highpass);
+    highCutFilter.setType(juce::dsp::StateVariableTPTFilterType::lowpass);
 }
 
 DDDelayAudioProcessor::~DDDelayAudioProcessor() {
@@ -92,6 +94,12 @@ void DDDelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
 
     feedbackL = 0.0f;
     feedbackR = 0.0f;
+
+    lowCutFilter.prepare(spec);
+    lowCutFilter.reset();
+
+    highCutFilter.prepare(spec);
+    highCutFilter.reset();
 }
 
 void DDDelayAudioProcessor::releaseResources() {
@@ -151,6 +159,9 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
             float delayInSamples = params.delayTime / 1000.0f * sampleRate;
             delayLine.setDelay(delayInSamples);
 
+            lowCutFilter.setCutoffFrequency(params.lowCut);
+            highCutFilter.setCutoffFrequency(params.highCut);
+
             float dryL = inputDataL[sample];
             float dryR = inputDataR[sample];
 
@@ -163,7 +174,12 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
             float wetR = delayLine.popSample(1);
 
             feedbackL = wetL * params.feedback;
+            feedbackL = lowCutFilter.processSample(0, feedbackL);
+            feedbackL = highCutFilter.processSample(0, feedbackL);
+
             feedbackR = wetR * params.feedback;
+            feedbackR = lowCutFilter.processSample(1, feedbackR);
+            feedbackR = highCutFilter.processSample(1, feedbackR);
 
             float mixL = dryL + wetL * params.mix;
             float mixR = dryR + wetR * params.mix;
@@ -176,14 +192,19 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
             params.smoothen();
 
             float delayInSamples = params.delayTime / 1000.0f * sampleRate;
-
             delayLine.setDelay(delayInSamples);
+
+            lowCutFilter.setCutoffFrequency(params.lowCut);
+            highCutFilter.setCutoffFrequency(params.highCut);
 
             float dry = inputDataL[sample];
             delayLine.pushSample(0, dry + feedbackL);
 
             float wet = delayLine.popSample(0);
+
             feedbackL = wet * params.feedback;
+            feedbackL = lowCutFilter.processSample(0, feedbackL);
+            feedbackL = highCutFilter.processSample(0, feedbackL);
 
             float mix = dry + wet * params.mix;
             outputDataL[sample] = mix * params.gain;
