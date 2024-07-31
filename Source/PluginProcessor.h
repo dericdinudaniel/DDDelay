@@ -10,6 +10,7 @@
 
 #include <JuceHeader.h>
 
+#include "DelayLine.h"
 #include "Parameters.h"
 #include "Tempo.h"
 
@@ -64,7 +65,7 @@ class DDDelayAudioProcessor : public juce::AudioProcessor {
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessor)
 
-    juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
+    DelayLine delayLineL, delayLineR;
 
     Tempo tempo;
 

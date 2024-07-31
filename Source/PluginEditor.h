@@ -19,7 +19,7 @@
 /**
  */
 class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor,
-private juce::AudioProcessorParameter::Listener {
+                                    private juce::AudioProcessorParameter::Listener {
    public:
     DDDelayAudioProcessorEditor(DDDelayAudioProcessor&);
     ~DDDelayAudioProcessorEditor() override;

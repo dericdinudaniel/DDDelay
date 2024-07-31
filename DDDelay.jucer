@@ -13,6 +13,8 @@
       <FILE id="j5VIy8" name="Noise.png" compile="0" resource="1" file="Resources/Noise.png"/>
     </GROUP>
     <GROUP id="{1C969D2A-E24B-CA76-6AD1-5917B7656834}" name="Source">
+      <FILE id="V93w0L" name="DelayLine.cpp" compile="1" resource="0" file="Source/DelayLine.cpp"/>
+      <FILE id="BFtfUH" name="DelayLine.h" compile="0" resource="0" file="Source/DelayLine.h"/>
       <FILE id="cE6MvV" name="DSP.h" compile="0" resource="0" file="Source/DSP.h"/>
       <FILE id="yfPPkm" name="LookAndFeel.cpp" compile="1" resource="0" file="Source/LookAndFeel.cpp"/>
       <FILE id="mFw6Yb" name="LookAndFeel.h" compile="0" resource="0" file="Source/LookAndFeel.h"/>
