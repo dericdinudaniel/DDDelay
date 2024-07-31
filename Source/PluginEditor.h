@@ -18,7 +18,8 @@
 //==============================================================================
 /**
  */
-class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
+class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor,
+private juce::AudioProcessorParameter::Listener {
    public:
     DDDelayAudioProcessorEditor(DDDelayAudioProcessor&);
     ~DDDelayAudioProcessorEditor() override;
@@ -33,6 +34,10 @@ class DDDelayAudioProcessorEditor : public juce::AudioProcessorEditor {
     DDDelayAudioProcessor& audioProcessor;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessorEditor)
+
+    void parameterValueChanged(int, float) override;
+    void parameterGestureChanged(int, bool) override {}
+    void updateDelayKnobs(bool tempoSyncActive);
 
     RotaryKnob gainKnob{"Gain", audioProcessor.apvts, gainParamID, true};
     RotaryKnob mixKnob{"Mix", audioProcessor.apvts, mixParamID};

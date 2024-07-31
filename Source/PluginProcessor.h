@@ -58,13 +58,14 @@ class DDDelayAudioProcessor : public juce::AudioProcessor {
     juce::AudioProcessorValueTreeState apvts{
         *this, nullptr, "Parameters", Parameters::createParameterLayout()};
 
+    Parameters params;
+
    private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(DDDelayAudioProcessor)
 
     juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
 
-    Parameters params;
     Tempo tempo;
 
     float feedbackL = 0.0f;

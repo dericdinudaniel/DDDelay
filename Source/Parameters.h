@@ -47,6 +47,8 @@ class Parameters {
     static constexpr float minDelayTime = 5.0f;
     static constexpr float maxDelayTime = 5000.0f;
 
+    juce::AudioParameterBool* tempoSyncParam;
+
    private:
     juce::AudioParameterFloat* gainParam;
     juce::LinearSmoothedValue<float> gainSmoother;
@@ -71,6 +73,5 @@ class Parameters {
     juce::AudioParameterFloat* highCutParam;
     juce::LinearSmoothedValue<float> highCutSmoother;
 
-    juce::AudioParameterBool* tempoSyncParam;
     juce::AudioParameterChoice* delayNoteParam;
 };
