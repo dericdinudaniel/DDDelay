@@ -18,7 +18,7 @@ class DelayLine {
     void reset() noexcept;
 
     void write(float input) noexcept;
-    float read(int delayInSamples) const noexcept;
+    float read(float delayInSamples) const noexcept;
 
     int getBufferLength() const noexcept {
         return bufferLength;
