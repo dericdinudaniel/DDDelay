@@ -103,6 +103,8 @@ void DDDelayAudioProcessor::prepareToPlay(double sampleRate, int samplesPerBlock
 
     lastLowCut = -1.0f;
     lastHighCut = -1.0f;
+
+    tempo.reset();
 }
 
 void DDDelayAudioProcessor::releaseResources() {
@@ -140,6 +142,12 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         buffer.clear(i, 0, buffer.getNumSamples());
 
     params.update();
+    tempo.update(getPlayHead());
+
+    float syncedTime = float(tempo.getMillisecondsForNoteLength(params.delayNote));
+    if (syncedTime > Parameters::maxDelayTime) {
+        syncedTime = Parameters::maxDelayTime;
+    }
 
     float sampleRate = float(getSampleRate());
 
@@ -159,7 +167,8 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
             params.smoothen();
 
-            float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+            float delayTime = params.tempoSync ? syncedTime : params.delayTime;
+            float delayInSamples = delayTime / 1000.0f * sampleRate;
             delayLine.setDelay(delayInSamples);
 
             if (params.lowCut != lastLowCut) {
@@ -200,7 +209,8 @@ void DDDelayAudioProcessor::processBlock(juce::AudioBuffer<float>& buffer, [[may
         for (int sample = 0; sample < buffer.getNumSamples(); ++sample) {
             params.smoothen();
 
-            float delayInSamples = params.delayTime / 1000.0f * sampleRate;
+            float delayTime = params.tempoSync ? syncedTime : params.delayTime;
+            float delayInSamples = delayTime / 1000.0f * sampleRate;
             delayLine.setDelay(delayInSamples);
 
             if (params.lowCut != lastLowCut) {

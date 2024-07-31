@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 
 #include "Parameters.h"
+#include "Tempo.h"
 
 //==============================================================================
 /**
@@ -64,6 +65,7 @@ class DDDelayAudioProcessor : public juce::AudioProcessor {
     juce::dsp::DelayLine<float, juce::dsp::DelayLineInterpolationTypes::Linear> delayLine;
 
     Parameters params;
+    Tempo tempo;
 
     float feedbackL = 0.0f;
     float feedbackR = 0.0f;
